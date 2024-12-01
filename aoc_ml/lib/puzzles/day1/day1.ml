@@ -4,34 +4,37 @@ let split_inputs file =
   let ic = open_in file in
   let rec read_lines left right =
     try
-      let line = input_line ic in
-      let pair = Scanf.sscanf line "%d %d" (fun l r -> (l, r)) in
-      read_lines (fst pair :: left) (snd pair :: right)
+      input_line ic
+      |> fun line ->
+      Scanf.sscanf line "%d %d" (fun l r -> (l, r))
+      |> fun (l, r) -> read_lines (l :: left) (r :: right)
     with End_of_file ->
       close_in ic ;
-      (List.rev left, List.rev right)
+      (left |> List.rev, right |> List.rev)
   in
   read_lines [] []
 
 let sorted lst = List.sort (fun a b -> compare a b) lst
 
 let part1 =
-  let left, right = split_inputs file in
+  split_inputs file
+  |> fun (left, right) ->
   let sorted_left = sorted left in
   let sorted_right = sorted right in
-  let distance_pairs =
-    List.map2 (fun x y -> abs (x - y)) sorted_right sorted_left
-  in
-  List.fold_left ( + ) 0 distance_pairs
+  List.map2 (fun x y -> abs (x - y)) sorted_right sorted_left
+  |> List.fold_left ( + ) 0
 
 let part2 =
-  let left, right = split_inputs file in
-  let count x lst = List.length (List.filter (fun y -> y == x) lst) in
-  let count_occurrences left right = List.map (fun x -> count x right) left in
-  let scores =
-    List.map2 (fun x y -> x * y) left (count_occurrences left right)
+  split_inputs file
+  |> fun (left, right) ->
+  let count x lst = lst |> List.filter (fun y -> y == x) |> List.length in
+  let count_occurrences left right =
+    left |> List.map (fun x -> count x right)
   in
-  List.fold_left ( + ) 0 scores
+  let scores =
+    count_occurrences left right |> List.map2 (fun x y -> x * y) left
+  in
+  scores |> List.fold_left ( + ) 0
 
 let () =
   Printf.printf "Part 1: %d\n" part1 ;
