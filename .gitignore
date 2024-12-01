@@ -11,3 +11,5 @@ devenv.local.nix
 .envrc
 
 _build/
+
+./lib/puzzles/*/*.txt

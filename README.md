@@ -4,4 +4,6 @@
 
 My attempts and solutions to doing AoC2024 in Ocaml
 
-Solutions and puzzle inputs will be stored in `./lib/puzzles` and divided into each day they're opened in.
+For my personal structure flow, solutions and puzzle inputs will be stored in `./lib/puzzles` and divided into each day they're opened in. 
+Not gonna include my puzzle inputs in the remote repository though because it's not allowed :/. 
+
